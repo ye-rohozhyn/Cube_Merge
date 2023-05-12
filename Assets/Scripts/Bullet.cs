@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
                 int newValue = _value + 1;
                 SetValue(newValue);
 
-                if (newValue > PlayerController.MaxBulletValueInGame)
+                if (newValue > PlayerController.MaxBulletValueInGame & newValue <= PlayerController.MaxSpawnBulletValue)
                 {
                     PlayerController.MaxBulletValueInGame = newValue;
                 }

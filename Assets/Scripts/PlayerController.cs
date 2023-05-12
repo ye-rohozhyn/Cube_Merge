@@ -9,14 +9,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float spawnBulletDelay = 2f;
     [SerializeField] private float force = 10f;
-    [SerializeField] private int maxSpawnBulletValue = 7;
+    [SerializeField] private int maxBulletValue = 13;
 
     private float _fingerPositionX;
     private Vector3 _targetPosition;
     private Transform _transform;
     private float _leftLimit = -2f, _rightLimit = 2f;
+
     private Transform _bullet;
     public static int MaxBulletValueInGame { set; get; }
+    public static int MaxSpawnBulletValue { set; get; }
+    bool _readyToShoot;
 
     private void Start()
     {
@@ -24,10 +27,15 @@ public class PlayerController : MonoBehaviour
         _bullet = GetComponentInChildren<Transform>().GetChild(0);
 
         MaxBulletValueInGame = 1;
+        MaxSpawnBulletValue = (maxBulletValue / 2) + 1;
+
+        _readyToShoot = true;
     }
 
     private void Update()
     {
+        if (!_readyToShoot) return;
+
         if (Input.GetMouseButton(0))
         {
             OnDrag();
@@ -57,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDragEnd()
     {
+        _readyToShoot = false;
+
         Rigidbody bullet = _bullet.GetComponent<Rigidbody>();
         
         if (bullet)
@@ -75,5 +85,7 @@ public class PlayerController : MonoBehaviour
         _bullet = Instantiate(bulletPrefab, _transform.position, Quaternion.identity).transform;
         _bullet.GetComponent<Bullet>().SetValue(Random.Range(1, MaxBulletValueInGame));
         _bullet.SetParent(_transform);
+
+        _readyToShoot = true;
     }
 }
