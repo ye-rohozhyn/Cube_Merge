@@ -3,13 +3,20 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float moveSensetivity = 2f;
+
+    [Header("Bullets")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float spawnBulletDelay = 2f;
     [SerializeField] private float force = 10f;
     [SerializeField] private int maxBulletValue = 13;
+    
+    [Header("Aim")]
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private float lineLength;
 
     private float _fingerPositionX;
     private Vector3 _targetPosition;
@@ -38,13 +45,30 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            SetPointLineRenderer();
             OnDrag();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
+            DisableLineRenderer();
             OnDragEnd();
         }
+    }
+
+
+    private void SetPointLineRenderer()
+    {
+        Vector3 startPosition = _transform.position;
+        startPosition.y = 0.55f;
+        Vector3 endPosition = startPosition + Vector3.forward * lineLength;
+        lineRenderer.SetPosition(0, startPosition);
+        lineRenderer.SetPosition(1, endPosition);
+    }
+
+    private void DisableLineRenderer()
+    {
+        lineRenderer.enabled = false;
     }
 
     private void OnDrag()
@@ -65,6 +89,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDragEnd()
     {
+        if (!_bullet) return;
+
         _readyToShoot = false;
 
         Rigidbody bullet = _bullet.GetComponent<Rigidbody>();
@@ -73,6 +99,7 @@ public class PlayerController : MonoBehaviour
         {
             bullet.transform.SetParent(null);
             bullet.AddForce(bullet.transform.forward * force, ForceMode.Impulse);
+            bullet.tag = "Untagged";
         }
 
         StartCoroutine(SpawnBullet());
@@ -83,9 +110,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(spawnBulletDelay);
 
         _bullet = Instantiate(bulletPrefab, _transform.position, Quaternion.identity).transform;
-        _bullet.GetComponent<Bullet>().SetValue(Random.Range(1, MaxBulletValueInGame));
+        _bullet.GetComponent<Bullet>().SetValue(Random.Range(1, MaxBulletValueInGame + 1));
         _bullet.SetParent(_transform);
 
         _readyToShoot = true;
+        lineRenderer.enabled = true;
     }
 }
