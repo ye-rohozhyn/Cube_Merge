@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
 
     [Header("Other")]
+    [SerializeField] private GameObject[] maps;
+    [SerializeField] private GameObject[] mapImages;
     [SerializeField] private Toggle soundToggle;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject startText;
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour
     private int _bestScore = 0;
     private int _gameScore = 0;
     private AudioSource[] _soundSources;
+    private int _currentMapIndex = 0;
 
     private void Start()
     {
@@ -50,6 +53,12 @@ public class GameManager : MonoBehaviour
             sound.volume = (int)sounds;
         }
 
+        _currentMapIndex = PlayerPrefs.GetInt("MapIndex", 0);
+        maps[0].SetActive(false);
+        mapImages[0].SetActive(false);
+        maps[_currentMapIndex].SetActive(true);
+        mapImages[_currentMapIndex].SetActive(true);
+
         _bestScore = PlayerPrefs.GetInt("Score", 0);
         bestScoreText.text = _bestScore.ToString();
     }
@@ -58,6 +67,7 @@ public class GameManager : MonoBehaviour
     {
         sounds = (Status)(soundToggle.isOn ? 1 : 0);
         PlayerPrefs.SetInt("Sounds", (int)sounds);
+        PlayerPrefs.Save();
         foreach (AudioSource sound in _soundSources)
         {
             sound.volume = (int)sounds;
@@ -115,6 +125,42 @@ public class GameManager : MonoBehaviour
     public void SaveScore()
     {
         PlayerPrefs.SetInt("Score", _gameScore);
+        PlayerPrefs.Save();
+    }
+
+    public void ButtonLeft()
+    {
+        if (_currentMapIndex == 0) return;
+
+        mapImages[_currentMapIndex].SetActive(false);
+        _currentMapIndex--;
+        mapImages[_currentMapIndex].SetActive(true);
+    }
+
+    public void ButtonRight()
+    {
+        if (_currentMapIndex == maps.Length - 1) return;
+
+        mapImages[_currentMapIndex].SetActive(false);
+        _currentMapIndex++;
+        mapImages[_currentMapIndex].SetActive(true);
+    }
+
+    public void SelectMap()
+    {
+        for (int i = 0; i < maps.Length; i++)
+        {
+            if (i == _currentMapIndex)
+            {
+                maps[_currentMapIndex].SetActive(true);
+            }
+            else
+            {
+                maps[i].SetActive(false);
+            }
+        } 
+
+        PlayerPrefs.SetInt("MapIndex", _currentMapIndex);
         PlayerPrefs.Save();
     }
 }

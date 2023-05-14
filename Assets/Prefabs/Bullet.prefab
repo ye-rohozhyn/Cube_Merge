@@ -10789,7 +10789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 1
-  mergeForce: 20
+  mergeForce: 15
   bulletRenderer: {fileID: 5748461717394142397}
   bulletColors:
   - {r: 0.7735849, g: 0.21345581, b: 0.13501246, a: 0}
