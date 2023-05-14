@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private GameManager gameManager;
+
     [Header("Movement")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float moveSpeed = 5f;
@@ -12,8 +15,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float spawnBulletDelay = 2f;
     [SerializeField] private float force = 10f;
-    [SerializeField] private int maxBulletValue = 13;
-    
+
+    private Transform _bullet;
+    public static int MaxBulletValueInGame { set; get; }
+    public static int MaxSpawnBulletValue { set; get; }
+    public static int MaxBulletValue { set; get; }
+
     [Header("Aim")]
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private float lineLength;
@@ -22,10 +29,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _targetPosition;
     private Transform _transform;
     private float _leftLimit = -2f, _rightLimit = 2f;
+    private int _countTouches;
 
-    private Transform _bullet;
-    public static int MaxBulletValueInGame { set; get; }
-    public static int MaxSpawnBulletValue { set; get; }
     bool _readyToShoot;
 
     private void Start()
@@ -34,14 +39,21 @@ public class PlayerController : MonoBehaviour
         _bullet = GetComponentInChildren<Transform>().GetChild(0);
 
         MaxBulletValueInGame = 1;
-        MaxSpawnBulletValue = (maxBulletValue / 2) + 1;
+        MaxBulletValue = 13;
+        MaxSpawnBulletValue = (MaxBulletValue / 2) + 1;
 
         _readyToShoot = true;
     }
 
     private void Update()
     {
-        if (!_readyToShoot) return;
+        if (!_readyToShoot || EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (Input.GetMouseButtonDown(0) & _countTouches == 0)
+        {
+            gameManager.HideStartText();
+            _countTouches++;
+        }
 
         if (Input.GetMouseButton(0))
         {
@@ -55,7 +67,6 @@ public class PlayerController : MonoBehaviour
             OnDragEnd();
         }
     }
-
 
     private void SetPointLineRenderer()
     {
@@ -115,5 +126,6 @@ public class PlayerController : MonoBehaviour
 
         _readyToShoot = true;
         lineRenderer.enabled = true;
+        SetPointLineRenderer();
     }
 }

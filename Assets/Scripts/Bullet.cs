@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +7,10 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float mergeForce = 20f;
     [SerializeField] private Renderer bulletRenderer;
     [SerializeField] private Color[] bulletColors;
+    [SerializeField] private float explosionWaitTime = 2f;
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private float explosionForce = 5f;
+    [SerializeField] private ParticleSystem explosionEffect;
 
     private int _value = 1;
     private TMP_Text[] _valueFields;
@@ -46,7 +51,35 @@ public class Bullet : MonoBehaviour
             PlayerController.MaxBulletValueInGame = newValue;
         }
 
-        _bulletRb.AddForce(Vector3.up * mergeForce, ForceMode.Impulse);
+        if (newValue < PlayerController.MaxBulletValue)
+        {
+            _bulletRb.AddForce(Vector3.up * mergeForce, ForceMode.Impulse);
+        }
+        else
+        {
+            StartCoroutine(Explosion());
+        }
+    }
+
+    private IEnumerator Explosion()
+    {
+        yield return new WaitForSeconds(explosionWaitTime);
+
+        explosionEffect.transform.SetParent(null);
+        explosionEffect.Play();
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        foreach (Collider collider in colliders)
+        {
+            Rigidbody rb = collider.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+            }
+        }
+
+        Destroy(gameObject);
     }
 
     public void SetValue(int value)

@@ -1,25 +1,61 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private float timeStopDuration = 1f;
-    [SerializeField] private float timeStopSmoothness = 0.1f;
+    [Header("Settings")]
+    [SerializeField] private int fpsLock = 60;
+    [SerializeField] private VSync vSync;
+
+    [Header("Game panels")]
+    [SerializeField] private GameObject losePanel;
+
+    [Header("Other")]
+    [SerializeField] private GameObject startText;
+
+    public bool ActivePanel { get; set; }
 
     private void Start()
     {
-        Time.timeScale = 1;
+        Application.targetFrameRate = fpsLock;
+        QualitySettings.vSyncCount = (int) vSync;
+        Time.timeScale = 1f;
     }
 
     public void ShowLosePanel()
     {
         Time.timeScale = 0f;
 
-        print("Lose");
+        losePanel.SetActive(true);
+    }
+
+    public void ShowPanel(GameObject panelRoot)
+    {
+        if (ActivePanel) return;
+
+        panelRoot.SetActive(true);
+        ActivePanel = true;
+    }
+
+    public void ClosePanel(GameObject panelRoot)
+    {
+        panelRoot.SetActive(false);
+        ActivePanel = false;
     }
 
     public void Restart()
     {
-        //restart scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void HideStartText()
+    {
+        startText.SetActive(false);
+    }
+}
+
+public enum VSync
+{
+    Off = 0,
+    On = 1
 }
