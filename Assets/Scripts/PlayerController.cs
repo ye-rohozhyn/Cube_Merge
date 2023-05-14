@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) & _countTouches == 0)
         {
-            gameManager.HideStartText();
+            gameManager.StartPlay();
             _countTouches++;
         }
 
