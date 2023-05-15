@@ -18,11 +18,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text bestScoreText;
     [SerializeField] private TMP_Text scoreText;
 
-    [Header("Other")]
+    [Header("Maps")]
     [SerializeField] private GameObject[] maps;
     [SerializeField] private GameObject[] mapImages;
-    [SerializeField] private Toggle soundToggle;
+    [SerializeField] private int[] mapsScore;
+
+    [Header("Game Panels")]
     [SerializeField] private GameObject losePanel;
+
+    [Header("Other")]
+    [SerializeField] private Toggle soundToggle;
+    [SerializeField] private TMP_Text buttonSelectText;
     [SerializeField] private GameObject startText;
 
     public bool ActivePanel { get; set; }
@@ -31,6 +37,7 @@ public class GameManager : MonoBehaviour
     private int _gameScore = 0;
     private AudioSource[] _soundSources;
     private int _currentMapIndex = 0;
+    private bool _lose;
 
     private void Start()
     {
@@ -89,18 +96,21 @@ public class GameManager : MonoBehaviour
         }
 
         losePanel.SetActive(true);
+        _lose = true;
     }
 
     public void ShowPanel(GameObject panelRoot)
     {
         if (ActivePanel) return;
 
+        Time.timeScale = 0f;
         panelRoot.SetActive(true);
         ActivePanel = true;
     }
 
     public void ClosePanel(GameObject panelRoot)
     {
+        if (!_lose) Time.timeScale = 1f;
         panelRoot.SetActive(false);
         ActivePanel = false;
     }
@@ -119,6 +129,13 @@ public class GameManager : MonoBehaviour
     public void AddScore(int score)
     {
         _gameScore += score;
+
+        if (_gameScore > _bestScore)
+        {
+            _bestScore = _gameScore;
+            SaveScore();
+        }
+
         scoreText.text = _gameScore.ToString();
     }
 
@@ -134,6 +151,12 @@ public class GameManager : MonoBehaviour
 
         mapImages[_currentMapIndex].SetActive(false);
         _currentMapIndex--;
+
+        if (mapsScore[_currentMapIndex] > _bestScore)
+            buttonSelectText.text = "Score: " + mapsScore[_currentMapIndex];
+        else
+            buttonSelectText.text = "Select";
+
         mapImages[_currentMapIndex].SetActive(true);
     }
 
@@ -143,11 +166,19 @@ public class GameManager : MonoBehaviour
 
         mapImages[_currentMapIndex].SetActive(false);
         _currentMapIndex++;
+
+        if (mapsScore[_currentMapIndex] > _bestScore)
+            buttonSelectText.text = "Score: " + mapsScore[_currentMapIndex];
+        else
+            buttonSelectText.text = "Select";
+
         mapImages[_currentMapIndex].SetActive(true);
     }
 
     public void SelectMap()
     {
+        if (mapsScore[_currentMapIndex] > _bestScore) return;
+
         for (int i = 0; i < maps.Length; i++)
         {
             if (i == _currentMapIndex)

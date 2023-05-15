@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!_readyToShoot || EventSystem.current.IsPointerOverGameObject()) return;
+        if (!_readyToShoot || EventSystem.current.IsPointerOverGameObject() || gameManager.ActivePanel) return;
 
         if (Input.GetMouseButtonDown(0) & _countTouches == 0)
         {

@@ -45,8 +45,6 @@ public class Bullet : MonoBehaviour
         {
             if (value.Equals(bullet.GetValue()) & !value.Equals(PlayerController.MaxBulletValue))
             {
-                _gameManager.PlaySound(mergeSound);
-                _gameManager.AddScore(value * 2);
                 Merge(bullet.transform);
             }
         }
@@ -54,6 +52,10 @@ public class Bullet : MonoBehaviour
 
     public void Merge(Transform bullet)
     {
+        if (!mergeSound & !mergeEffect) return;
+
+        _gameManager.AddScore(value * 2);
+        _gameManager.PlaySound(mergeSound);
         mergeEffect.Play();
 
         transform.position = Vector3.Distance(transform.position, Vector3.zero) > Vector3.Distance(bullet.position, Vector3.zero) ? transform.position : bullet.position;
