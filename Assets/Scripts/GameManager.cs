@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
     [Header("Game Panels")]
     [SerializeField] private GameObject losePanel;
 
+    [Header("Ads")]
+    [SerializeField] private InterstitialAds interstitialAds;
+
     [Header("Other")]
     [SerializeField] private Toggle soundToggle;
     [SerializeField] private TMP_Text buttonSelectText;
@@ -97,6 +100,8 @@ public class GameManager : MonoBehaviour
 
         losePanel.SetActive(true);
         _lose = true;
+
+        interstitialAds.ShowAd();
     }
 
     public void ShowPanel(GameObject panelRoot)

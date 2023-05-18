@@ -2746,7 +2746,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &739086231
 PrefabInstance:
@@ -3422,7 +3422,7 @@ Transform:
   m_Children:
   - {fileID: 1669448903}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &918638568
 MonoBehaviour:
@@ -3976,7 +3976,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
 --- !u!82 &963194229
 AudioSource:
@@ -4367,6 +4367,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bd5ba950156cc84bb8209d96031c09b, type: 3}
+--- !u!1 &1164886116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1164886117}
+  - component: {fileID: 1164886119}
+  - component: {fileID: 1164886118}
+  m_Layer: 0
+  m_Name: Ads Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1164886117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164886116}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1164886118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164886116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6912fd7ffd37c4697ac64c8adeb20a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1164886119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164886116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56fadc3e6f57ca4fadb390e455e271f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1188990142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4940899138243738878, guid: 9e28acfe0aa2e9f4db5cc7104f13e0ce, type: 3}
@@ -4520,7 +4577,7 @@ Transform:
   - {fileID: 1429175046691780293}
   - {fileID: 604174139}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1311629011
 GameObject:
@@ -5972,7 +6029,7 @@ RectTransform:
   - {fileID: 909784170}
   - {fileID: 935819044}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6320,7 +6377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7b1dd185bca4d4a84aca6fb38364e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fpsLock: 0
+  fpsLock: 60
   vSync: 0
   sounds: 0
   audioSource: {fileID: 963194229}
@@ -6335,8 +6392,9 @@ MonoBehaviour:
   - {fileID: 54537209}
   - {fileID: 1983343633}
   - {fileID: 69755121}
-  mapsScore: 00000000e8030000d0070000
+  mapsScore: 0000000064000000c8000000
   losePanel: {fileID: 662551007}
+  interstitialAds: {fileID: 1164886118}
   soundToggle: {fileID: 1803517769}
   buttonSelectText: {fileID: 616509724}
   startText: {fileID: 1505169539}
@@ -6475,7 +6533,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1929001911 stripped
 Transform:
@@ -7070,7 +7128,7 @@ RectTransform:
   - {fileID: 900973398}
   - {fileID: 501665538}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7107,7 +7165,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2129269738
 MonoBehaviour:
